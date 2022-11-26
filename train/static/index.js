@@ -80,7 +80,7 @@ wasdDirection.forEach(key =>{
         let translateKey;
         if(!keysDown[key]){
             keysDown[key] = true;
-            translateKey = key === 'w'? 'up': key === 'a' ? 'left': key === 's'? 'down': key === 'd'? 'left':''; // translates the wasd key to the arrow keys
+            translateKey = key === 'w'? 'up': key === 'a' ? 'left': key === 's'? 'down': key === 'd'? 'right':''; // translates the wasd key to the arrow keys
             switchOn(keyDirections[translateKey]);
             console.log(`you pressed ${key} and switched on`);
         }
@@ -90,7 +90,7 @@ wasdDirection.forEach(key =>{
     Mousetrap.bind(key, ()=>{
         let translateKey;
             keysDown[key] = false;
-            translateKey = key === 'w'? 'up': key === 'a' ? 'left': key === 's'? 'down': key === 'd'? 'left':''; // translates the wasd key to the arrow keys
+            translateKey = key === 'w'? 'up': key === 'a' ? 'left': key === 's'? 'down': key === 'd'? 'right':''; // translates the wasd key to the arrow keys
             switchOff(keyDirections[translateKey]);
             console.log(`you lift the ${key} key and switched off`);
     },'keyup');
