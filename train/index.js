@@ -19,7 +19,7 @@ const switchOff = (direction)=>{
         .catch(error => console.log(error));
 }
 
-//bindin the buttons on the UI
+//binding the buttons on the UI
 const buttons = ['forward', 'backward', 'left', 'right'];
 buttons.forEach(btn =>{
  const htmlTags = document.querySelector(`#${btn}`);
@@ -53,17 +53,45 @@ const keyDirections = {
 
 //bind the keyboard keys
 const directions = ['up', 'down', 'left', 'right'];
+const wasdDirection = ['w','a','s','d'];
 
+// arrow keys
 directions.map((key)=>{
     Mousetrap.bind(key, ()=>{
         if(!keysDown[key]){
             keysDown[key] = true;
             switchOn(keyDirections[key]);
+            console.log(`you pressed ${key} and switched on`);
         }
     }, 'keydown');
 
     Mousetrap.bind(key, ()=>{
             keysDown[key] = false;
             switchOff(keyDirections[key]);
+            console.log(`you lift the ${key} key and switched off`);
     }, 'keyup')
 });
+
+//WASD
+wasdDirection.forEach(key =>{
+
+    //switch on on keydown
+    Mousetrap.bind(key, ()=>{
+        let translateKey;
+        if(!keysDown[key]){
+            keysDown[key] = true;
+            translateKey = key === 'w'? 'up': key === 'a' ? 'left': key === 's'? 'down': key === 'd'? 'left':''; // translates the wasd key to the arrow keys
+            switchOn(keyDirections[translateKey]);
+            console.log(`you pressed ${key} and switched on`);
+        }
+    },'keydown');
+
+    //switch off on keyup
+    Mousetrap.bind(key, ()=>{
+        let translateKey;
+            keysDown[key] = false;
+            translateKey = key === 'w'? 'up': key === 'a' ? 'left': key === 's'? 'down': key === 'd'? 'left':''; // translates the wasd key to the arrow keys
+            switchOff(keyDirections[translateKey]);
+            console.log(`you lift the ${key} key and switched off`);
+    },'keyup');
+})
