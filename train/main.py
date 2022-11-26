@@ -1,11 +1,12 @@
+import io
 import urllib.request
-
 import serial
 import time
 import requests
 from PIL import Image
 from io import BytesIO
 import uuid
+
 
 arduino = serial.Serial('COM3', 9600)
 time.sleep(2)
@@ -36,13 +37,21 @@ CORS(app)
 # arduino.write(b'right_off\n')
 # time.sleep(testTime)
 
+dirDict = {
+    '0': 'forward',
+    '1': 'backwards',
+    '2': 'left',
+    '3': 'right'
+}
+
 def save_data(command):
-    #request the image many times
+    # request the image many times
+    # for some reasons the app doesn't always return
     for _ in range(0, 10):
-        response = requests.get('camURL')
-        #save image for future use
-        #the direction is stored at the end of filename
-    Image.open(BytesIO(response.content)).convert('L').save('../data_tmp/{}_{}.jpg'.format(uuid.uuid1(), command))
+        response = requests.get('http://192.168.0.164:8080/shot.jpg')
+    # save the image for future use
+    # the direction is stored at the end of filename
+    Image.open(BytesIO(response.content)).convert('L').save('images/{}_{}.jpg'.format(uuid.uuid1(), command))
 
 @app.route("/")
 def home():
@@ -50,7 +59,7 @@ def home():
 
 @app.route("/forward")
 def forward():
-    #save_data(0)
+    save_data(0)
     arduino.write(b'forward_on\n')
     time.sleep(0.10)
     arduino.write(b'forward_off\n')
@@ -58,7 +67,7 @@ def forward():
 
 @app.route("/backward")
 def backward():
-    #save_data(0)
+    save_data(1)
     arduino.write(b'backward_on\n')
     time.sleep(0.10)
     arduino.write(b'backward_off\n')
@@ -66,7 +75,7 @@ def backward():
 
 @app.route("/left")
 def left():
-    #save_data(1)
+    save_data(2)
     arduino.write(b'left_on\n')
     time.sleep(0.5)
     arduino.write(b'forward_on\n')
@@ -78,7 +87,7 @@ def left():
 
 @app.route("/right")
 def right():
-    #save_data(2)
+    save_data(3)
     arduino.write(b'right_on\n')
     time.sleep(0.5)
     arduino.write(b'forward_on\n')
