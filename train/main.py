@@ -11,14 +11,14 @@ import uuid
 arduino = serial.Serial('COM3', 9600)
 time.sleep(2)
 
-#TODO: IMPORT FLASK & FLASK_CORS
+# TODO: IMPORT FLASK & FLASK_CORS
 from flask import Flask, render_template
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-#start checking
+# start checking
 # testTime = 1
 # arduino.write(b'forward_on\n')
 # time.sleep(testTime)
@@ -48,7 +48,7 @@ def save_data(command):
     # request the image many times
     # for some reasons the app doesn't always return
     for _ in range(0, 10):
-        response = requests.get('cameraURL')
+        response = requests.get('http://192.168.0.164:8080/shot.jpg')
     # save the image for future use
     # the direction is stored at the end of filename
     Image.open(BytesIO(response.content)).convert('L').save('images/{}_{}.jpg'.format(uuid.uuid1(), command))
@@ -101,3 +101,10 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0')
 
 print("U good")
+
+#     ____  ________ __
+#    / __ \/ ____/ //_/
+#   / /_/ / /   / ,<
+#  / _, _/ /___/ /| |
+# /_/ |_|\____/_/ |_|
+
