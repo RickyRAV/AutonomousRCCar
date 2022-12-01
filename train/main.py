@@ -48,7 +48,7 @@ def save_data(command):
     # request the image many times
     # for some reasons the app doesn't always return
     for _ in range(0, 10):
-        response = requests.get('http://192.168.0.164:8080/shot.jpg')
+        response = requests.get('CameraURL')
     # save the image for future use
     # the direction is stored at the end of filename
     Image.open(BytesIO(response.content)).convert('L').save('images/{}_{}.jpg'.format(uuid.uuid1(), command))
